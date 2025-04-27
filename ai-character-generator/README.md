@@ -1,6 +1,6 @@
 # AI Character Generator
 
-This project is a simple AI Character Generator with image generation UI. It includes a frontend built with Tailwind CSS and a backend Node.js server simulating AI character and image generation APIs.
+This project is a simple AI Character Generator with image generation UI. It includes a frontend built with Tailwind CSS and a backend Node.js server integrating OpenAI's GPT-4 for text generation and DALL·E for image generation.
 
 ## Prerequisites
 
@@ -36,7 +36,13 @@ cd ai-character-generator
 npm install
 ```
 
-4. Start the backend server:
+4. Set your OpenAI API key as an environment variable:
+
+```bash
+export OPENAI_API_KEY="your_openai_api_key_here"
+```
+
+5. Start the backend server:
 
 ```bash
 npm start
@@ -51,8 +57,10 @@ The server will start on port 3000.
 2. Navigate to:
 
 ```
-http://localhost:3000/index.html
+http://localhost:3000/
 ```
+
+(Note: The frontend files are served from the `public` directory.)
 
 3. Enter a character description in the text area.
 
@@ -62,7 +70,7 @@ http://localhost:3000/index.html
 
 ## Customization
 
-- The backend currently returns simulated AI responses. To integrate real AI services, update the API endpoints in `server.js`.
+- The backend uses OpenAI's GPT-4 for text generation and DALL·E for image generation. You can customize the prompts and parameters in `server.js`.
 
 - The frontend uses Tailwind CSS, Google Fonts, and Font Awesome via CDN for styling.
 
@@ -75,6 +83,8 @@ sudo npm start
 ```
 
 - Ensure port 3000 is free or change the port in `server.js`.
+
+- Make sure your OpenAI API key is set correctly in the environment variable `OPENAI_API_KEY`.
 
 ## License
 
