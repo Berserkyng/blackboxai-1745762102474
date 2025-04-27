@@ -1,15 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require('openai');
 
 const app = express();
 const port = 3000;
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,7 +21,7 @@ app.post('/api/generate-character', async (req, res) => {
     return res.status(400).json({ error: 'Prompt is required' });
   }
   try {
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
         { role: 'system', content: 'You are an AI that generates detailed character descriptions based on user prompts.' },
@@ -31,7 +30,7 @@ app.post('/api/generate-character', async (req, res) => {
       max_tokens: 500,
       temperature: 0.8,
     });
-    const character = completion.data.choices[0].message.content.trim();
+    const character = completion.choices[0].message.content.trim();
     res.json({ character });
   } catch (error) {
     console.error('Error generating character:', error);
@@ -46,12 +45,12 @@ app.post('/api/generate-image', async (req, res) => {
     return res.status(400).json({ error: 'Prompt is required' });
   }
   try {
-    const response = await openai.createImage({
+    const response = await openai.images.generate({
       prompt: prompt,
       n: 1,
       size: '512x512',
     });
-    const imageUrl = response.data.data[0].url;
+    const imageUrl = response.data[0].url;
     res.json({ imageUrl });
   } catch (error) {
     console.error('Error generating image:', error);
