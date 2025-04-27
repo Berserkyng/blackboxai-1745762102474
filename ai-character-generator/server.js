@@ -2,12 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const OpenAI = require('openai');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const port = 3000;
-
-const fs = require('fs');
-const path = require('path');
 
 let openaiApiKey = process.env.OPENAI_API_KEY;
 
@@ -33,7 +32,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// AI character generation endpoint using OpenAI GPT-4
+// AI character generation endpoint using OpenAI GPT-3.5-turbo (fallback from GPT-4)
 app.post('/api/generate-character', async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) {
@@ -41,7 +40,7 @@ app.post('/api/generate-character', async (req, res) => {
   }
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: 'You are an AI that generates detailed character descriptions based on user prompts.' },
         { role: 'user', content: prompt },
