@@ -6,8 +6,27 @@ const OpenAI = require('openai');
 const app = express();
 const port = 3000;
 
+const fs = require('fs');
+const path = require('path');
+
+let openaiApiKey = process.env.OPENAI_API_KEY;
+
+// If OPENAI_API_KEY is not set, try to read from openai_token.txt
+if (!openaiApiKey) {
+  try {
+    const tokenPath = path.join(__dirname, 'openai_token.txt');
+    const tokenContent = fs.readFileSync(tokenPath, 'utf-8').trim();
+    if (tokenContent && !tokenContent.startsWith('#')) {
+      openaiApiKey = tokenContent;
+      console.log('Loaded OpenAI API key from openai_token.txt');
+    }
+  } catch (err) {
+    console.warn('Could not read openai_token.txt:', err.message);
+  }
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: openaiApiKey,
 });
 
 app.use(cors());
