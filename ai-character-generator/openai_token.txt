@@ -1,0 +1,2 @@
+# Place your OpenAI API key below this line, without quotes
+your_openai_api_key_here
